@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Travel Data Analyzer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.31.0/build/stlite.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.31.0/build/stlite.js"></script>
+    <script>
+      stlite.mount({
+        requirements: ["pandas", "plotly"], // Libraries needed
+        entrypoint: "app.py",
+        files: {
+          "app.py": `
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+st.title("🌍 Travel Record Analyzer")
+st.write("Upload your Excel or CSV travel logs to see your stats!")
+
+uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx'])
+
+if uploaded_file is not None:
+    # Load data
+    if uploaded_file.name.endswith('.csv'):
+        df = pd.read_csv(uploaded_file)
+    else:
+        df = pd.read_excel(uploaded_file)
+
+    st.subheader("Raw Data Preview")
+    st.dataframe(df.head())
+
+    # Example Analysis: Spending or Distance
+    columns = df.columns.tolist()
+    
+    st.sidebar.header("Settings")
+    x_axis = st.sidebar.selectbox("Select Column for X-axis (e.g., Date/City)", columns)
+    y_axis = st.sidebar.selectbox("Select Column for Y-axis (e.g., Cost/Miles)", columns)
+
+    if st.button("Generate Analysis"):
+        fig = px.bar(df, x=x_axis, y=y_axis, title=f"{y_axis} by {x_axis}")
+        st.plotly_chart(fig)
+        
+        st.success("Analysis Complete!")
+`
+        }
+      }, document.getElementById("root"));
+    </script>
+  </body>
+</html>
