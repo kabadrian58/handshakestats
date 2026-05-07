@@ -12,7 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@stlite/mountable@0.31.0/build/stlite.js"></script>
     <script>
       stlite.mount({
-        requirements: ["pandas", "plotly"], // Libraries needed
+        requirements: ["pandas", "plotly", "openpyxl", "pyarrow"], // Libraries needed
         entrypoint: "app.py",
         files: {
           "app.py": `
@@ -20,7 +20,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.title("🌍 Travel Record Analyzer")
+st.title("Handshake Stats Analyzer")
 st.write("Upload your Excel or CSV travel logs to see your stats!")
 
 uploaded_file = st.file_uploader("Choose a file", type=['csv', 'xlsx'])
