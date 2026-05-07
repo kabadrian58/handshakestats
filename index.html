@@ -35,19 +35,25 @@ if uploaded_file is not None:
     st.subheader("Raw Data Preview")
     st.dataframe(df.head())
 
-    # Example Analysis: Spending or Distance
-    columns = df.columns.tolist()
+    st.subheader("Data Visualization")
     
-    st.sidebar.header("Settings")
-    x_axis = st.sidebar.selectbox("Select Column for X-axis (e.g., Date/City)", columns)
-    y_axis = st.sidebar.selectbox("Select Column for Y-axis (e.g., Cost/Miles)", columns)
-
-    if st.button("Generate Analysis"):
-        fig = px.bar(df, x=x_axis, y=y_axis, title=f"{y_axis} by {x_axis}")
-        st.plotly_chart(fig)
+    # Filter columns that are good for Pie Charts (Categorical)
+    # We usually want columns with a manageable number of unique values
+    pie_columns = [col for col in df.columns if df[col].nunique() < 20]
+    
+    if pie_columns:
+        target_col = st.selectbox("Select a category to visualize as a Pie Chart:", pie_columns)
         
-        st.success("Analysis Complete!")
-`
+        # Create the Pie Chart
+        # count() is used to show the distribution of entries
+        fig = px.pie(df, names=target_col, title=f"Distribution of {target_col}", hole=0.3)
+        
+        # Improve layout
+        fig.update_traces(textposition='inside', textinfo='percent+label')
+        
+        st.plotly_chart(fig)
+    else:
+        st.warning("No suitable categorical columns found for a pie chart.")
         }
       }, document.getElementById("root"));
     </script>
