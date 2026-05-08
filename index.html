@@ -46,19 +46,7 @@ if uploaded_file is not None:
         pie_data = df[target_col].value_counts().reset_index()
         pie_data.columns = ['labels', 'counts']
         
-        # Now we pass simple columns, avoiding the 'narwhals' bug
-        fig = px.pie(
-            pie_data, 
-            values='counts', 
-            names='labels', 
-            title=f"Distribution of {target_col}",
-            hole=0.4
-            )
-        
-        # Improve layout
-        fig.update_traces(textposition='inside', textinfo='percent+label')
-        
-        st.plotly_chart(fig)
+        st.bar_chart(data=pie_data, x=target_col, y='Count', color=target_col)
     else:
         st.warning("No suitable categorical columns found for a pie chart.")
 `
