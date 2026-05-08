@@ -43,7 +43,7 @@ if uploaded_file is not None:
         
         # Create the Pie Chart
         # count() is used to show the distribution of entries
-        fig = px.pie(df, names=target_col, title=f"Distribution of {target_col}", hole=0.3)
+        fig = px.pie(df[target_col], names=target_col, title=f"Distribution of {target_col}", hole=0.3)
         
         # Improve layout
         fig.update_traces(textposition='inside', textinfo='percent+label')
