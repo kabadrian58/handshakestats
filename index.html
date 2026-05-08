@@ -46,7 +46,7 @@ if uploaded_file is not None:
         pie_data = df[target_col].value_counts().reset_index()
         pie_data.columns = ['labels', 'counts']
         
-        st.bar_chart(data=pie_data, x=target_col, y='Count', color=target_col)
+        st.bar_chart(data=pie_data, x=target_col, y='Count')
     else:
         st.warning("No suitable categorical columns found for a pie chart.")
 `
