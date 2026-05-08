@@ -44,9 +44,9 @@ if uploaded_file is not None:
         # WORKAROUND: Manually count the values first
         # This creates a simple dataframe with 'labels' and 'counts'
         pie_data = df[target_col].value_counts().reset_index()
-        pie_data.columns = ['labels', 'counts']
+        print(pie_data)
         
-        st.bar_chart(data=pie_data, x=target_col, y='Count')
+        st.bar_chart(data=pie_data, x=pie_data.iloc[:,0].values, y=pie_data.iloc[:,1].values)
     else:
         st.warning("No suitable categorical columns found for a pie chart.")
 `
