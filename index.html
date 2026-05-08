@@ -41,9 +41,19 @@ if uploaded_file is not None:
     if pie_columns:
         target_col = st.selectbox("Select a category to visualize as a Pie Chart:", pie_columns)
         
-        # Create the Pie Chart
-        # count() is used to show the distribution of entries
-        fig = px.pie(df[target_col], names=target_col, title=f"Distribution of {target_col}", hole=0.3)
+        # WORKAROUND: Manually count the values first
+        # This creates a simple dataframe with 'labels' and 'counts'
+        pie_data = df[target_col].value_counts().reset_index()
+        pie_data.columns = ['labels', 'counts']
+        
+        # Now we pass simple columns, avoiding the 'narwhals' bug
+        fig = px.pie(
+            pie_data, 
+            values='counts', 
+            names='labels', 
+            title=f"Distribution of {target_col}",
+            hole=0.4
+            )
         
         # Improve layout
         fig.update_traces(textposition='inside', textinfo='percent+label')
